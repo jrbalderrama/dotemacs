@@ -140,6 +140,9 @@
  ;; scroll-margin 0
  ;;
  ;; scroll-preserve-screen-position t
+ ;;
+ ;; ask for textual confirmation instead of GUI
+ use-file-dialog nil
  ;; don't ask before open a symlink
  vc-follow-symlinks t
  ;; backup files even when they're in vc
