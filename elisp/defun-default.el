@@ -2,6 +2,20 @@
 ;;; Commentary:
 ;;; Code:
 
+
+;;;###autoload
+(defun parentheses/org-file-register (filename &optional user-org-directory)
+  "Get a path of a 'org-mode' file FILENAME with from the USER-ORG-DIRECTORY.
+
+The USER-ORG-DIRECTORY is set to ~/Org as default."
+  (unless user-org-directory
+    (setq
+     user-org-directory
+     (expand-file-name "Org" (file-name-as-directory
+                              (getenv "HOME")))))
+  (expand-file-name filename (file-name-as-directory
+                          user-org-directory)))
+
 ;;;###autoload
 (defun parentheses/kill-buffer (kill-buffer &rest args)
   "Do not kill the `*scratch*' buffer when KILL-BUFFER is invoked.

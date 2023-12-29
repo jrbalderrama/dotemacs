@@ -156,12 +156,11 @@
 ;;
 ;; emacs init file
 (set-register ?e `(file . ,user-init-file))
-(set-register ?a `(file . "/home/javier/Org/Audio.org"))
-(set-register ?l `(file . "/home/javier/Org/Logbook.org"))
-(set-register ?n `(file . "/home/javier/Org/Notes.org"))
-(set-register ?t `(file . "/home/javier/Org/Tasks.org"))
-(set-register ?d `(file . "/home/javier/Videos/tbd.org"))
-(set-register ?f `(file . "/home/javier/Org/tbd.org"))
+(set-register ?a `(file . ,(parentheses/org-file-register "Audio.org")))
+(set-register ?f `(file . ,(parentheses/org-file-register "Food.org")))
+(set-register ?l `(file . ,(parentheses/org-file-register "Logbook.org")))
+(set-register ?n `(file . ,(parentheses/org-file-register "Notes.org")))
+(set-register ?t `(file . ,(parentheses/org-file-register "Tasks.org")))
 ;; (set-register ?x '(file . "/path/file"))
 ;; (set-register ?x (cons 'file "/path/file"))
 
