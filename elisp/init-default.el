@@ -323,21 +323,21 @@
 ;; (require 'org-install)
 ;; (define-key global-map (kbd "C-c a") 'org-agenda)
 
-
 ;; set symbols replacement and ligatures with typeface
+;; install the fonts wit the 'M-x fira-code-mode-install-fonts'
 (use-package fira-code-mode
-  :custom (fira-code-mode-disabled-ligatures '("[]" "x"))
+  :if (display-graphic-p)
   :config
-
-  ;;; typeface management
-  ;;
-  ;; use 'Fira Code' everywhere in GUI
-  (when (window-system)
-    (set-frame-font "Fira Code")
-
-    ;; load "Fira Code Symbol" (different from default "Fira Code")
-    ;; ligatures everywhere install the fonts wit the fira-code-mode-install-fonts
-    (global-fira-code-mode)))
+  ;; ligatures everywhere
+  (global-fira-code-mode)
+  ;; (when (window-system)
+  ;;   (set-frame-font "Fira Code"))
+  ;; "Fira Code" everywhere in GUI (different from "Fira Code Symbols")
+  (set-face-attribute 'default nil :family "Fira Code")
+  (set-face-attribute 'default nil :height 115)
+  :custom
+  ;; disable some ligatures
+  (fira-code-mode-disabled-ligatures '("[]" "x")))
 
 
 (provide 'init-default)
