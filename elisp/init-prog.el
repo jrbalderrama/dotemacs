@@ -10,8 +10,9 @@
   :hook (prog-mode . company-mode))
 
 (use-package diff-hl
-  :hook ((prog-mode . diff-hl-flydiff-mode)
-         (vc-dir-mode . diff-hl-flydiff-mode)))
+  :config (diff-hl-flydiff-mode)
+  :hook ((prog-mode . turn-on-diff-hl-mode)
+         (vc-dir-mode . turn-on-diff-hl-mode)))
 
 (use-package flycheck
   :hook (prog-mode . flycheck-mode)
