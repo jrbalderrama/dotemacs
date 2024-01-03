@@ -10,9 +10,8 @@
   :hook (prog-mode . company-mode))
 
 (use-package diff-hl
-  ;; :config (turn-on-diff-hl-mode)
-  :hook ((prog-mode . turn-on-diff-hl-mode)
-         (vc-dir-mode . turn-on-diff-hl-mode)))
+  :hook ((prog-mode . diff-hl-flydiff-mode)
+         (vc-dir-mode . diff-hl-flydiff-mode)))
 
 (use-package flycheck
   :hook (prog-mode . flycheck-mode)
@@ -68,10 +67,7 @@
   ;; spell only strings not source code
   (add-hook 'prog-mode-hook #'flyspell-prog-mode)
   ;; show line numbers
-  (add-hook 'prog-mode-hook #'display-line-numbers-mode)
-  ;; highlights uncommitted changes next to line number
-  ;; (add-hook 'prog-mode-hook 'diff-hl-flydiff-mode)
-  )
+  (add-hook 'prog-mode-hook #'display-line-numbers-mode))
 
 ;; (load "~/.emacs.d/elisp/init-elisp.el")
 ;; (require 'init-python)
