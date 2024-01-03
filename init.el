@@ -168,7 +168,7 @@
 ;; Load theme after all configuration is done
 (use-package zenburn-theme
   :config
-  (load-theme 'zenburn t))
+  (load-theme 'zenburn :no-confirm))
 
 ;; turn off debugging
 (setq debug-on-error nil)
