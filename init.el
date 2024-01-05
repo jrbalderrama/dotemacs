@@ -16,34 +16,34 @@
  ;; activate debug while loading
  debug-on-error t)
 
-(eval-when-compile
-  ;; ;; remove double buffering slow with v26 on AwesomeMW
-  ;; (modify-frame-parameters nil
-  ;;                          '((inhibit-double-buffering . t)))
-  ;; (setq default-frame-alist
-  ;;       (append default-frame-alist '((inhibit-double-buffering . t))))
-  ;; maximize initial frame on startup
-  (add-to-list 'initial-frame-alist
-               '(fullscreen . fullboth))
-               ;; '(fullscreen . fullheight))
-
-  ;; (add-hook 'window-setup-hook 'toggle-frame-fullscreen t)
-  ;; ;; overide default frame setup
-  ;; (add-to-list 'default-frame-alist '(fullscreen . full))
-  ;; remove useless decoration
-  (when (fboundp 'tool-bar-mode)
-    ;; remove tool bar with icons
-    (tool-bar-mode -1))
-  (when (fboundp 'scroll-bar-mode)
-    ;; remove vertical scroll bar
-    (scroll-bar-mode -1))
-  (when (fboundp 'horizontal-scroll-bar-mode)
-    ;; remove horizontal scroll bar
-    (horizontal-scroll-bar-mode -1))
-  (when (fboundp 'menu-bar-mode)
-    ;; (unless (display-graphic-p)
-    ;; remove bar menu in terminals
-    (menu-bar-mode -1)))
+;; (eval-when-compile
+;;   ;; ;; remove double buffering slow with v26 on AwesomeMW
+;;   ;; (modify-frame-parameters nil
+;;   ;;                          '((inhibit-double-buffering . t)))
+;;   ;; (setq default-frame-alist
+;;   ;;       (append default-frame-alist '((inhibit-double-buffering . t))))
+;;   ;; maximize initial frame on startup
+;;   (add-to-list 'initial-frame-alist
+;;                '(fullscreen . fullboth)))
+;;                ;; '(fullscreen . fullheight))
+  ;;
+  ;; ;; (add-hook 'window-setup-hook 'toggle-frame-fullscreen t)
+  ;; ;; ;; overide default frame setup
+  ;; ;; (add-to-list 'default-frame-alist '(fullscreen . full))
+  ;; ;; remove useless decoration
+  ;; (when (fboundp 'tool-bar-mode)
+  ;;   ;; remove tool bar with icons
+  ;;   (tool-bar-mode -1))
+  ;; (when (fboundp 'scroll-bar-mode)
+  ;;   ;; remove vertical scroll bar
+  ;;   (scroll-bar-mode -1))
+  ;; (when (fboundp 'horizontal-scroll-bar-mode)
+  ;;   ;; remove horizontal scroll bar
+  ;;   (horizontal-scroll-bar-mode -1))
+  ;; (when (fboundp 'menu-bar-mode)
+  ;;   ;; (unless (display-graphic-p)
+  ;;   ;; remove bar menu in terminals
+  ;;   (menu-bar-mode -1)))
 
 
 ;; define directories and files
@@ -156,6 +156,7 @@
 ;;
 ;; emacs init file
 (set-register ?e `(file . ,user-init-file))
+(set-register ?p `(file . "~/.emacs.d/elisp/init-prog.el"))
 (set-register ?a `(file . ,(parentheses/org-file-register "Audio.org")))
 (set-register ?f `(file . ,(parentheses/org-file-register "Food.org")))
 (set-register ?l `(file . ,(parentheses/org-file-register "Logbook.org")))
