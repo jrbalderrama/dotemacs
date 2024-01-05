@@ -323,9 +323,27 @@
 ;; (require 'org-install)
 ;; (define-key global-map (kbd "C-c a") 'org-agenda)
 
+;; use doom-modeline instead
+(use-package diminish
+  :disabled
+  :demand t
+  :config
+  (diminish 'highlight-changes-mode)
+  (diminish 'subword-mode)
+  (diminish 'visual-line-mode)
+  (diminish 'whitespace-mode))
+
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode)
+  :custom
+  (doom-modeline-env-enable-python nil)
+  (doom-modeline-total-line-number t))
+
 ;; set symbols replacement and ligatures with typeface
-;; install the fonts wit the 'M-x fira-code-mode-install-fonts'
+;; install the fonts with the 'M-x fira-code-mode-install-fonts'
 (use-package fira-code-mode
+  :diminish
   :if (display-graphic-p)
   :config
   ;; ligatures everywhere
@@ -338,6 +356,10 @@
   :custom
   ;; disable some ligatures
   (fira-code-mode-disabled-ligatures '("[]" "x")))
+
+;; install the fonst with 'M-x nerd-icons-install-fonts'
+(use-package nerd-icons
+  :ensure t)
 
 
 (provide 'init-default)
