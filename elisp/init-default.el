@@ -342,7 +342,6 @@
   (diminish 'whitespace-mode))
 
 (use-package doom-modeline
-  :ensure t
   :hook (after-init . doom-modeline-mode)
   :custom
   (doom-modeline-env-enable-python nil)
@@ -366,8 +365,7 @@
   (fira-code-mode-disabled-ligatures '("[]" "x")))
 
 ;; install the fonst with 'M-x nerd-icons-install-fonts'
-(use-package nerd-icons
-  :ensure t)
+(use-package nerd-icons)
 
 (use-package savehist
   :defer t

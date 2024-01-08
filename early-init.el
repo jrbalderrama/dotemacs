@@ -15,6 +15,7 @@
 (push '(vertical-scroll-bars . nil) default-frame-alist)
 (setq
  byte-compile-warnings '(cl-functions)
+ package-enable-at-startup nil
  ;; https://github.com/mnewt/dotemacs/blob/master/early-init.el
  frame-inhibit-implied-resize t
  frame-resize-pixelwise t)
