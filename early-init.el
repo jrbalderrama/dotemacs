@@ -8,14 +8,14 @@
 ;;
 ;;; Code:
 
-
-
 (push '(fullscreen . fullboth) initial-frame-alist)
-(push '(menu-bar-lines . 0) default-frame-alist)
-(push '(tool-bar-lines . 0) default-frame-alist)
-(push '(vertical-scroll-bars) default-frame-alist)
+(push '(menu-bar-lines . nil) default-frame-alist)
+(push '(tool-bar-lines . nil) default-frame-alist)
+;; horizontal are not implemented
+(push '(vertical-scroll-bars . nil) default-frame-alist)
 (setq
  byte-compile-warnings '(cl-functions)
+ ;; https://github.com/mnewt/dotemacs/blob/master/early-init.el
  frame-inhibit-implied-resize t
  frame-resize-pixelwise t)
 
