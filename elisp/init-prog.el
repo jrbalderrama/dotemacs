@@ -7,27 +7,25 @@
 ;;   (add-to-list 'aggressive-indent-excluded-modes 'yaml-mode))
 
 ;; TODO
-;; - ein
-;; ruff linter
-;; refactoring
-;; lsp-ui
-;; pydoc edoc
-;; pytest
-;; Vertico and Corfu and Orderless + (embark, consult)
+;; - ein (jupyter)
+;; - ruff linter in two years
+;; - refactoring
+;; - pydoc edoc
+;; - Vertico and Corfu and Orderless + (embark, consult)
 (use-package company
   :diminish
-  :hook (prog-mode . company-mode)
-  :bind (:map company-active-map
-              ("<tab>" . company-complete-selection))
   :custom
   (company-idle-delay 0)
-  (company-minimum-prefix-length 2))
+  (company-minimum-prefix-length 2)
+  :bind (:map company-active-map
+              ("<tab>" . company-complete-selection))
+  :hook (prog-mode . company-mode))
 
 (use-package company-box
   :hook (company-mode . company-box-mode))
 
-(use-package company-quickhelp
-  :hook (company-mode . company-quickhelp-mode))
+;; (use-package company-quickhelp
+;;   :hook (company-mode . company-quickhelp-mode))
 
 (use-package dap-mode
   :disabled
@@ -46,20 +44,19 @@
 
 (use-package direnv
   :after exec-path-from-shell
-  :hook
-  (prog-mode . direnv-mode))
+  :hook (python-mode . direnv-mode))
 
-;; use direnv instead
 (use-package envrc
   :disabled
   :after exec-path-from-shell
   :config (envrc-global-mode))
 
 (use-package flycheck
-  :hook (prog-mode . flycheck-mode)
-  :bind (:map flycheck-command-map
-              ;; use 'C-c ! t' to with tip cycle
-              ("t" . #'flycheck-tip-cycle)))
+  :custom
+  (flycheck-idle-buffer-switch-delay 0)
+  (flycheck-check-syntax-automatically
+   '(save idle-buffer-switch idle-change new-line mode-enabled))
+  :hook (prog-mode . flycheck-mode))
 
 (use-package flycheck-pos-tip
   :after flycheck
@@ -71,29 +68,52 @@
   (pos-tip-background-color "black"))
 
 (use-package flycheck-pycheckers
-  :after flycheck
+  :after (:all direnv flycheck)
   :custom (flycheck-pycheckers-checkers '(mypy3 flake8))
-  ;; :config
+  ;; :config (add-to-list 'direnv-non-file-modes 'flycheck-mode)
   ;; (setq flycheck-pycheckers-ignore-codes (append flycheck-pycheckers-ignore-codes '("E0731" "E0741")))
-  :hook (flycheck-mode-hook . flycheck-pycheckers-setup))
+  :hook (flycheck-mode . flycheck-pycheckers-setup))
+
+(use-package flycheck-mypy
+  :disabled
+  :after flycheck
+  :config
+  (load (expand-file-name
+         "flycheck-python-ruff.el"
+         (file-name-as-directory
+          user-elisp-directory)))
+  :hook ((python-mode python-ts-mode) . flycheck-python-ruff-setup))
+
+(use-package flycheck-python-ruff
+  :disabled
+  :after flycheck
+  :requires flycheck-mypy
+  :hook ((python-mode python-ts-mode) . flycheck-python-ruff-setup))
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :init (setq lsp-keymap-prefix "C-c l")
+  :config (require 'lsp-ido)
+  :custom
+  (lsp-diagnostics-provider :none)
+  (lsp-enable-snippet nil)
+  (lsp-modeline-diagnostics-scope nil)
   :bind (:map lsp-mode-map
-        ("<tab>" . company-indent-or-complete-common))
+              ("<tab>" . company-indent-or-complete-common))
   :hook
   (python-mode . lsp-deferred)
   (lsp-mode . lsp-enable-which-key-integration))
 
 (use-package lsp-pyright
-  :after lsp-mode
+  :after (:all lsp-mode direnv)
   :custom
   (lsp-pyright-disable-language-service nil)
   (lsp-pyright-disable-organize-imports t))
 
 (use-package lsp-treemacs
-  :after lsp-mode)
+  :defer t
+  :custom
+  (lsp-treemacs-sync-mode t))
 
 (use-package lsp-ui
   :commands lsp-ui-mode
@@ -102,28 +122,28 @@
   (lsp-ui-sideline-show-hover nil)
   (lsp-ui-sideline-show-diagnostics nil)
   (lsp-ui-sideline-show-code-actions t)
-  (lsp-ui-doc-delay 2)
-  :hook
-  (lsp-mode . lsp-ui-mode)
+  (lsp-ui-doc-delay 1)
   :bind (:map lsp-ui-mode-map
-              ("C-c i" . lsp-ui-imenu)))
+              ("C-c i" . lsp-ui-imenu))
+  :hook (lsp-mode . lsp-ui-mode))
 
 (use-package reformatter
-  :hook (python-mode . darker-reformat-on-save-mode)
   :config
   (reformatter-define darker-reformat
     :program "darker"
     :stdin nil
     :stdout nil
-    :args (list "-q" "-i" input-file)))
+    :args (list "-q" "-i" input-file))
+  :hook (python-mode . darker-reformat-on-save-mode))
 
 (use-package pyenv-mode
   :disabled
-  :init (setq exec-path (append exec-path '("~/.pyenv/bin")))
+  :after direnv
+  ;; :init (setq exec-path (append exec-path '("~/.pyenv/bin")))
   :hook (python-mode . pyenv-mode))
 
 (use-package python-pytest
-  :disabled)
+  :after direnv)
 
 (use-package python
   :custom
@@ -144,7 +164,6 @@
    (t
     (setq python-shell-interpreter "python"))))
 
-;; use direnv instead
 (use-package pyvenv
   :disabled
   :init
@@ -157,12 +176,14 @@
   (treemacs-width 24)
   :bind ("C-c t" . treemacs))
 
+(use-package with-venv
+  :disabled)
+
 (use-package which-key
   :diminish
   :after lsp-mode
-  :hook (lsp-mode . which-key-mode)
-  :custom
-  (which-key-sort-order 'which-key-local-then-key-order))
+  :custom (which-key-sort-order 'which-key-local-then-key-order)
+  :hook (lsp-mode . which-key-mode))
 
 (use-package jinja2-mode
   :disabled
