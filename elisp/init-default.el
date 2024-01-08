@@ -43,6 +43,8 @@
 (column-number-mode t)
 ;; remove text in active region if inserting text
 (delete-selection-mode t)
+
+(desktop-save-mode t)
 ;; being smart about filenames in mbuf
 (file-name-shadow-mode t)
 ;; show line numbers
@@ -102,10 +104,16 @@
  delete-old-versions t
  ;; delete trailing 'with delete-trailing-whitespace'
  delete-trailing-lines t
+
+ desktop-auto-save-timeout   30
+ desktop-dirname "~/.emacs.d/"
+ desktop-load-locked-desktop nil
  ;; comment also empty lines
  comment-empty-lines 'eol
  ;; cycle file completions up to the limit of options
  completion-cycle-threshold 5
+ ;; stop confirming the killing of processes
+ confirm-kill-processes nil
  ;; disabling prompt asking for confirmation with new files
  confirm-nonexistent-file-or-buffer nil
  ;; ;; show keystrokes in progress quicker
@@ -361,6 +369,63 @@
 (use-package nerd-icons
   :ensure t)
 
+(use-package savehist
+  :defer t
+  :config (savehist-mode))
+
+;; (use-package eglot
+;;   :custom
+;;   (eglot-autoshutdown t)
+;;   :hook
+;;   (latex-mode . eglot-ensure)
+;;   (LaTeX-mode . eglot-ensure))
+
+
+(use-package lsp-latex
+  :config
+  ;; (add-to-list 'TeX-view-program-selection
+  ;;              '(output-pdf "zathura"))
+  :custom
+  (lsp-latex-build-on-save t)
+  (lsp-latex-forward-search-executable "emacsclient")
+  (lsp-latex-forward-search-args
+   '("--eval"
+     "(lsp-latex-forward-search-with-pdf-tools \"%f\" \"%p\" \"%l\")"))
+
+  ;; (lsp-latex-forward-search-executable "evince-synctex")
+  ;; (lsp-latex-forward-search-args '("-f" "%l" "%p" "\"emacs +%l %f\""))
+  :hook
+  (tex-mode . lsp)
+  (latex-mode . lsp)
+  (LaTeX-mode . lsp)
+  ;;(LaTeX-mode . flycheck-mode)
+  ;;(latex-mode . flycheck-mode)
+  (latex-mode . flyspell-mode)
+  ;;(latex-mode . flycheck-mode)
+  (bib-tex .lsp))
+
+(use-package pdf-tools)
+
+;; (use-package exec-path-from-shell
+;;   :config
+;;   (when (memq window-system '(mac ns x))
+;;     (exec-path-from-shell-initialize)))
+;;
+;; (use-package direnv
+;;   :after exec-path-from-shell
+;;   :hook (flycheck-mode . direnv-mode))
+;;
+;; (use-package flycheck-grammalecte
+;;   :after direnv
+;;   :hook (fountain-mode . flycheck-mode)
+;;   :init
+;;   (setq flycheck-grammalecte-report-apos nil
+;;         flycheck-grammalecte-report-esp nil
+;;         flycheck-grammalecte-report-nbsp nil)
+;;   :config
+;;   (add-to-list 'flycheck-grammalecte-enabled-modes 'fountain-mode)
+;;   (grammalecte-download-grammalecte)
+;;   (flycheck-grammalecte-setup))
 
 (provide 'init-default)
 
